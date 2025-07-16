@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartKirana - Demo Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', 'Noto Sans Devanagari', sans-serif;
+            background-color: #f9fafb;
+            line-height: 1.6;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .hidden { display: none !important; }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            color: white;
+            padding: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-weight: bold;
+        }
+        
+        .logo h1 {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        
+        /* Main content */
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+        
+        .card h2 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+        
+        /* Summary grid */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .summary-item {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+        }
+        
+        .summary-item.sales {
+            background: #f0fdf4;
+        }
+        
+        .summary-item.items {
+            background: #eff6ff;
+        }
+        
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+        
+        .summary-value.green { color: #059669; }
+        .summary-value.blue { color: #2563eb; }
+        
+        .summary-label {
+            font-size: 0.875rem;
+            color: #374151;
+        }
+        
+        /* Alert */
+        .alert {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .alert-content h3 {
+            font-weight: 600;
+            color: #991b1b;
+            margin-bottom: 0.25rem;
+        }
+        
+        .alert-content p {
+            color: #b91c1c;
+        }
+        
+        /* Input section */
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .input-tabs {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .tab-button {
+            flex: 1;
+            padding: 0.75rem;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tab-button.active {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Voice input */
+        .voice-button {
+            width: 100%;
+            background: #2563eb;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+        
+        .voice-button:hover {
+            background: #1d4ed8;
+        }
+        
+        .voice-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .voice-result {
+            background: #f9fafb;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        
+        .voice-result p {
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .add-button {
+            background: #059669;
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+        }
+        
+        .add-button:hover {
+            background: #047857;
+        }
+        
+        /* Manual input */
+        .manual-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .form-group label {
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .form-input {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+        
+        .submit-button {
+            background: #059669;
+            color: white;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .submit-button:hover {
+            background: #047857;
+        }
+        
+        /* Stock list */
+        .stock-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .stock-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f9fafb;
+            border-radius: 0.5rem;
+        }
+        
+        .stock-item-left {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .stock-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .stock-info h3 {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stock-info p {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .stock-item-right {
+            text-align: right;
+        }
+        
+        .stock-quantity {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stock-status {
+            font-size: 0.75rem;
+        }
+        
+        .stock-status.low { color: #dc2626; }
+        .stock-status.good { color: #059669; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* QR and other sections */
+        .qr-section {
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .qr-code {
+            width: 128px;
+            height: 128px;
+            background: #000;
+            margin: 0 auto 0.5rem;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+        }
+        
+        .qr-amount {
+            font-size: 1.125rem;
+            font-weight: bold;
+            color: #059669;
+            margin-top: 0.5rem;
+        }
+        
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f0fdf4;
+            border-radius: 0.5rem;
+        }
+        
+        .transaction-amount {
+            color: #059669;
+            font-weight: 600;
+        }
+        
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 50;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 28rem;
+        }
+        
+        .modal h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .modal-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+        
+        .modal-button {
+            width: 100%;
+            background: #2563eb;
+            color: white;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 0.375rem;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">SK</div>
+                <h1>SmartKirana</h1>
+            </div>
+            <div>
+                <span>Ram Kirana Store</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main>
+        <!-- Today's Summary -->
+        <div class="card">
+            <h2>📊 Today's Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-item sales">
+                    <div class="summary-value green">₹2,450</div>
+                    <div class="summary-label">Today's Sales</div>
+                </div>
+                <div class="summary-item items">
+                    <div class="summary-value blue">47</div>
+                    <div class="summary-label">Total Items</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Low Stock Alert -->
+        <div class="alert pulse-animation" id="low-stock-alert">
+            <div>🔔</div>
+            <div class="alert-content">
+                <h3>Low Stock Alert!</h3>
+                <p>Maggi - Only 2 packets left</p>
+            </div>
+        </div>
+
+        <!-- Enhanced Input Section -->
+        <div class="card">
+            <h2>🛒 Add Items to Stock</h2>
+            <div class="input-section">
+                <!-- Tab buttons -->
+                <div class="input-tabs">
+                    <button class="tab-button active" onclick="switchTab('voice')">🎤 Voice Input</button>
+                    <button class="tab-button" onclick="switchTab('manual')">⌨️ Manual Input</button>
+                </div>
+
+                <!-- Voice Input Tab -->
+                <div id="voice-tab" class="tab-content active">
+                    <button onclick="startVoiceInput()" class="voice-button">
+                        <span>🎤</span>
+                        <span id="voice-btn-text">Speak to Add Items</span>
+                    </button>
+                    <div id="voice-result" class="voice-result hidden">
+                        <p>Recognized speech will appear here</p>
+                        <button onclick="processVoiceInput()" class="add-button">✓ Add Item</button>
+                    </div>
+                    <div style="font-size: 0.75rem; color: #6b7280; margin-top: 0.5rem;">
+                        <p>💡 Voice examples: "चावल 5 किलो", "Rice 2 kg", "चाय 3 पैकेट", "Oil 1 liter"</p>
+                        <p>📝 Manual: Add any product with quantity, unit, and price</p>
+                        <p>🎤 Microphone access required for voice input</p>
+                    </div>
+                </div>
+
+                <!-- Manual Input Tab -->
+                <div id="manual-tab" class="tab-content">
+                    <form class="manual-form" onsubmit="addManualItem(event)">
+                        <div class="form-group">
+                            <label for="item-name">Item Name / आइटम का नाम</label>
+                            <input type="text" id="item-name" class="form-input" 
+                                   placeholder="e.g., मैगी, Maggi, दूध, Milk" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="item-quantity">Quantity / मात्रा</label>
+                                <input type="number" id="item-quantity" class="form-input" 
+                                       placeholder="e.g., 10" min="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="item-unit">Unit / इकाई</label>
+                                <select id="item-unit" class="form-input" required>
+                                    <option value="">Select Unit</option>
+                                    <option value="packets">Packets / पैकेट</option>
+                                    <option value="liters">Liters / लीटर</option>
+                                    <option value="kg">Kg / किलो</option>
+                                    <option value="pieces">Pieces / पीस</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="item-price">Price per Unit / प्रति इकाई मूल्य (₹)</label>
+                            <input type="number" id="item-price" class="form-input" 
+                                   placeholder="e.g., 12" min="0" step="0.01">
+                        </div>
+                        <button type="submit" class="submit-button">✓ Add Item to Stock</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Current Stock -->
+        <div class="card">
+            <h2>📦 Current Stock</h2>
+            <div class="stock-list" id="stock-list">
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div class="stock-item">
+                        <div class="stock-item-left">
+                            <div class="stock-icon" style="background: #fef3c7;">🍜</div>
+                            <div class="stock-info">
+                                <h3>मैगी (Maggi)</h3>
+                                <p>₹12 per packet</p>
+                            </div>
+                        </div>
+                        <div class="stock-item-right">
+                            <div class="stock-quantity" id="maggi-stock">2 packets</div>
+                            <div class="stock-status low" id="maggi-status">Low Stock</div>
+                        </div>
+                    </div>
+                    <div class="stock-item">
+                        <div class="stock-item-left">
+                            <div class="stock-icon" style="background: #dbeafe;">🥛</div>
+                            <div class="stock-info">
+                                <h3>दूध (Milk - Amul)</h3>
+                                <p>₹60 per liter</p>
+                            </div>
+                        </div>
+                        <div class="stock-item-right">
+                            <div class="stock-quantity" id="milk-stock">15 liters</div>
+                            <div class="stock-status good" id="milk-status">In Stock</div>
+                        </div>
+                    </div>
+                    <div class="stock-item">
+                        <div class="stock-item-left">
+                            <div class="stock-icon" style="background: #fed7aa;">🍞</div>
+                            <div class="stock-info">
+                                <h3>ब्रेड (Bread)</h3>
+                                <p>₹25 per packet</p>
+                            </div>
+                        </div>
+                        <div class="stock-item-right">
+                            <div class="stock-quantity" id="bread-stock">8 packets</div>
+                            <div class="stock-status good" id="bread-status">In Stock</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UPI Payment Demo -->
+        <div class="card">
+            <h2>💳 UPI Payment</h2>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <input type="number" id="bill-amount" placeholder="Enter bill amount" class="form-input">
+                <button onclick="generateQR()" class="submit-button">Generate QR Code</button>
+                <div id="qr-section" class="qr-section hidden">
+                    <div style="background: #f3f4f6; padding: 1.5rem; border-radius: 0.5rem;">
+                        <div class="qr-code">QR Code</div>
+                        <div style="font-size: 0.875rem; color: #6b7280;">Customer scans this QR to pay</div>
+                        <div class="qr-amount" id="qr-amount">₹245</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="card">
+            <h2>💰 Recent Transactions</h2>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                <div class="transaction-item">
+                    <div>
+                        <div style="font-weight: 500;">मैगी (Maggi) - 3 packets</div>
+                        <div style="font-size: 0.875rem; color: #6b7280;">2 minutes ago</div>
+                    </div>
+                    <div class="transaction-amount">+₹36</div>
+                </div>
+                <div class="transaction-item">
+                    <div>
+                        <div style="font-weight: 500;">दूध (Milk) - 1 liter</div>
+                        <div style="font-size: 0.875rem; color: #6b7280;">15 minutes ago</div>
+                    </div>
+                    <div class="transaction-amount">+₹60</div>
+                </div>
+                <div class="transaction-item">
+                    <div>
+                        <div style="font-weight: 500;">ब्रेड (Bread) - 2 packets</div>
+                        <div style="font-size: 0.875rem; color: #6b7280;">1 hour ago</div>
+                    </div>
+                    <div class="transaction-amount">+₹50</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Report Button -->
+        <div class="card">
+            <button onclick="showDailyReport()" class="submit-button" 
+                    style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <span>📋</span>
+                <span>View Daily Report</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- Modal for Daily Report -->
+    <div id="report-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>📊 Today's Report</h3>
+            <div class="modal-row">
+                <span>Total Sales:</span>
+                <span style="font-weight: 600;">₹2,450</span>
+            </div>
+            <div class="modal-row">
+                <span>Total Customers:</span>
+                <span style="font-weight: 600;">23</span>
+            </div>
+            <div class="modal-row">
+                <span>Best Selling Item:</span>
+                <span style="font-weight: 600;">दूध (Milk)</span>
+            </div>
+            <div class="modal-row">
+                <span>Low Stock Items:</span>
+                <span style="font-weight: 600; color: #dc2626;">1</span>
+            </div>
+            <button onclick="closeModal()" class="modal-button">Close</button>
+        </div>
+    </div>
+
+    <script>
+        let recognition;
+        let recognizedText = '';
+        let stockData = {
+            'maggi': { quantity: 2, unit: 'packets', price: 12, icon: '🍜', display: 'मैगी (Maggi)' },
+            'milk': { quantity: 15, unit: 'liters', price: 60, icon: '🥛', display: 'दूध (Milk - Amul)' },
+            'bread': { quantity: 8, unit: 'packets', price: 25, icon: '🍞', display: 'ब्रेड (Bread)' }
+        };
+
+        // Product mapping for voice and manual input
+        const productMappings = {
+            // Maggi variations
+            'maggi': 'maggi', 'मैगी': 'maggi', 'noodles': 'maggi', 'noodle': 'maggi',
+            // Milk variations  
+            'milk': 'milk', 'दूध': 'milk', 'doodh': 'milk', 'amul': 'milk',
+            // Bread variations
+            'bread': 'bread', 'ब्रेड': 'bread', 'double roti': 'bread', 'pav': 'bread',
+            // Rice variations
+            'rice': 'rice', 'चावल': 'rice', 'chawal': 'rice', 'basmati': 'rice',
+            // Oil variations
+            'oil': 'oil', 'तेल': 'oil', 'tel': 'oil', 'cooking oil': 'oil', 'sunflower': 'oil',
+            // Sugar variations
+            'sugar': 'sugar', 'चीनी': 'sugar', 'cheeni': 'sugar', 'chini': 'sugar',
+            // Tea variations
+            'tea': 'tea', 'चाय': 'tea', 'chai': 'tea', 'tata tea': 'tea',
+            // Biscuit variations
+            'biscuit': 'biscuit', 'बिस्कुट': 'biscuit', 'parle': 'biscuit', 'marie': 'biscuit',
+            // Soap variations
+            'soap': 'soap', 'साबुन': 'soap', 'sabun': 'soap', 'lux': 'soap',
+            // Shampoo variations
+            'shampoo': 'shampoo', 'शैम्पू': 'shampoo', 'head shoulders': 'shampoo',
+            // Toothpaste variations
+            'toothpaste': 'toothpaste', 'टूथपेस्ट': 'toothpaste', 'colgate': 'toothpaste',
+            // Onion variations
+            'onion': 'onion', 'प्याज': 'onion', 'pyaz': 'onion', 'kanda': 'onion',
+            // Potato variations
+            'potato': 'potato', 'आलू': 'potato', 'aloo': 'potato', 'batata': 'potato',
+            // Tomato variations
+            'tomato': 'tomato', 'टमाटर': 'tomato', 'tamatar': 'tomato'
+        };
+
+        // Default product data for new items
+        const defaultProductData = {
+            'rice': { icon: '🍚', unit: 'kg', price: 80, display: 'चावल (Rice)' },
+            'oil': { icon: '🫒', unit: 'liters', price: 120, display: 'तेल (Oil)' },
+            'sugar': { icon: '🍯', unit: 'kg', price: 45, display: 'चीनी (Sugar)' },
+            'tea': { icon: '🍵', unit: 'packets', price: 250, display: 'चाय (Tea)' },
+            'biscuit': { icon: '🍪', unit: 'packets', price: 20, display: 'बिस्कुट (Biscuit)' },
+            'soap': { icon: '🧼', unit: 'pieces', price: 25, display: 'साबुन (Soap)' },
+            'shampoo': { icon: '🧴', unit: 'bottles', price: 180, display: 'शैम्पू (Shampoo)' },
+            'toothpaste': { icon: '🦷', unit: 'tubes', price: 85, display: 'टूथपेस्ट (Toothpaste)' },
+            'onion': { icon: '🧅', unit: 'kg', price: 35, display: 'प्याज (Onion)' },
+            'potato': { icon: '🥔', unit: 'kg', price: 25, display: 'आलू (Potato)' },
+            'tomato': { icon: '🍅', unit: 'kg', price: 40, display: 'टमाटर (Tomato)' }
+        };
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+
+        // Enhanced voice recognition with better error handling
+        function startVoiceInput() {
+            const btn = document.getElementById('voice-btn-text');
+            const result = document.getElementById('voice-result');
+            
+            // Check for HTTPS
+            if (location.protocol !== 'https:' && location.hostname !== 'localhost') {
+                alert('Speech recognition requires HTTPS connection. Please use a secure connection.');
+                return;
+            }
+            
+            // Check browser support
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('Speech recognition not supported. Please use Chrome, Edge, or Safari, or use Manual Input instead.');
+                return;
+            }
+            
+            // Create recognition instance
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            
+            // Configure recognition
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = 'hi-IN';
+            
+            // Update UI
+            btn.textContent = 'Listening... (Speak now)';
+            btn.disabled = true;
+            result.classList.add('hidden');
+            
+            // Handle successful recognition
+            recognition.onresult = function(event) {
+                recognizedText = event.results[0][0].transcript;
+                document.querySelector('#voice-result p').textContent = `"${recognizedText}"`;
+                result.classList.remove('hidden');
+                btn.textContent = 'Speak to Add Items';
+                btn.disabled = false;
+            };
+            
+            // Handle errors with specific messages
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error:', event.error);
+                btn.textContent = 'Speak to Add Items';
+                btn.disabled = false;
+                result.classList.add('hidden');
+                
+                switch(event.error) {
+                    case 'no-speech':
+                        alert('No speech detected. Please try again and speak clearly.');
+                        break;
+                    case 'audio-capture':
+                        alert('No microphone found. Please check your microphone connection.');
+                        break;
+                    case 'not-allowed':
+                        alert('Microphone access denied. Please allow microphone access in your browser settings and try again.');
+                        break;
+                    case 'network':
+                        alert('Network error. Please check your internet connection.');
+                        break;
+                    case 'aborted':
+                        alert('Speech recognition was aborted. Please try again.');
+                        break;
+                    default:
+                        alert('Speech recognition error. Please try using Manual Input instead.');
+                }
+            };
+            
+            recognition.onend = function() {
+                btn.textContent = 'Speak to Add Items';
+                btn.disabled = false;
+            };
+            
+            // Start recognition
+            try {
+                recognition.start();
+            } catch (error) {
+                console.error('Error starting recognition:', error);
+                btn.textContent = 'Speak to Add Items';
+                btn.disabled = false;
+                alert('Could not start speech recognition. Please try Manual Input instead.');
+            }
+        }
+
+        // Enhanced voice input processing
+        function processVoiceInput() {
+            const text = recognizedText.toLowerCase();
+            
+            // Parse quantity
+            const numbers = text.match(/\d+/g);
+            const quantity = numbers ? parseInt(numbers[0]) : 1;
+            
+            // Find matching product
+            let matchedProduct = null;
+            for (const [keyword, productKey] of Object.entries(productMappings)) {
+                if (text.includes(keyword)) {
+                    matchedProduct = productKey;
+                    break;
+                }
+            }
+            
+            if (matchedProduct) {
+                // Add to stock (create if doesn't exist)
+                addToStock(matchedProduct, quantity);
+                document.getElementById('voice-result').classList.add('hidden');
+                
+                const displayName = stockData[matchedProduct]?.display || matchedProduct;
+                alert(`${quantity} ${stockData[matchedProduct].unit} of ${displayName} added successfully!`);
+            } else {
+                // Try to create new product from voice input
+                const productName = text.replace(/\d+/g, '').replace(/packet|packets|liter|liters|kg|piece|pieces/g, '').trim();
+                if (productName.length > 2) {
+                    const newProductKey = productName.replace(/\s+/g, '_');
+                    addToStock(newProductKey, quantity, {
+                        display: productName,
+                        icon: '📦',
+                        unit: 'pieces',
+                        price: 0
+                    });
+                    document.getElementById('voice-result').classList.add('hidden');
+                    alert(`${quantity} pieces of ${productName} added successfully!`);
+                } else {
+                    alert('Product not recognized. Please try again with a clear product name, or use Manual Input.');
+                }
+            }
+        }
+
+        // Enhanced manual form submission
+        function addManualItem(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('item-name').value.trim();
+            const quantity = parseInt(document.getElementById('item-quantity').value);
+            const unit = document.getElementById('item-unit').value;
+            const price = parseFloat(document.getElementById('item-price').value) || 0;
+            
+            if (!name || !quantity || !unit) {
+                alert('Please fill all required fields.');
+                return;
+            }
+            
+            // Check if it matches existing product
+            const nameLower = name.toLowerCase();
+            let matchedProduct = null;
+            
+            for (const [keyword, productKey] of Object.entries(productMappings)) {
+                if (nameLower.includes(keyword)) {
+                    matchedProduct = productKey;
+                    break;
+                }
+            }
+            
+            if (matchedProduct) {
+                // Update existing product
+                addToStock(matchedProduct, quantity);
+                if (price > 0) {
+                    stockData[matchedProduct].price = price;
+                }
+                if (unit) {
+                    stockData[matchedProduct].unit = unit;
+                }
+                alert(`${quantity} ${unit} of ${stockData[matchedProduct].display} added successfully!`);
+            } else {
+                // Create new product
+                const newProductKey = name.toLowerCase().replace(/\s+/g, '_');
+                addToStock(newProductKey, quantity, {
+                    display: name,
+                    icon: '📦',
+                    unit: unit,
+                    price: price
+                });
+                alert(`New product "${name}" with ${quantity} ${unit} added successfully!`);
+            }
+            
+            // Reset form
+            document.getElementById('item-name').value = '';
+            document.getElementById('item-quantity').value = '';
+            document.getElementById('item-unit').value = '';
+            document.getElementById('item-price').value = '';
+        }
+
+        // Universal add to stock function
+        function addToStock(productKey, quantity, productData = null) {
+            // If product doesn't exist, create it
+            if (!stockData[productKey]) {
+                if (productData) {
+                    // Use provided data
+                    stockData[productKey] = {
+                        quantity: 0,
+                        unit: productData.unit,
+                        price: productData.price,
+                        icon: productData.icon,
+                        display: productData.display
+                    };
+                } else if (defaultProductData[productKey]) {
+                    // Use default data
+                    stockData[productKey] = {
+                        quantity: 0,
+                        unit: defaultProductData[productKey].unit,
+                        price: defaultProductData[productKey].price,
+                        icon: defaultProductData[productKey].icon,
+                        display: defaultProductData[productKey].display
+                    };
+                } else {
+                    // Create basic product
+                    stockData[productKey] = {
+                        quantity: 0,
+                        unit: 'pieces',
+                        price: 0,
+                        icon: '📦',
+                        display: productKey.charAt(0).toUpperCase() + productKey.slice(1)
+                    };
+                }
+                
+                // Add to UI
+                addProductToUI(productKey);
+            }
+            
+            // Update quantity
+            stockData[productKey].quantity += quantity;
+            
+            // Update UI
+            updateProductUI(productKey);
+            updateLowStockAlert();
+        }
+
+        // Add product to UI
+        function addProductToUI(productKey) {
+            const stockList = document.getElementById('stock-list');
+            const product = stockData[productKey];
+            
+            const stockItem = document.createElement('div');
+            stockItem.className = 'stock-item';
+            stockItem.id = `stock-item-${productKey}`;
+            
+            stockItem.innerHTML = `
+                <div class="stock-item-left">
+                    <div class="stock-icon" style="background: #e5e7eb;">${product.icon}</div>
+                    <div class="stock-info">
+                        <h3>${product.display}</h3>
+                        <p>₹${product.price} per ${product.unit.slice(0, -1)}</p>
+                    </div>
+                </div>
+                <div class="stock-item-right">
+                    <div class="stock-quantity" id="${productKey}-stock">${product.quantity} ${product.unit}</div>
+                    <div class="stock-status ${product.quantity > 5 ? 'good' : 'low'}" id="${productKey}-status">
+                        ${product.quantity > 5 ? 'In Stock' : 'Low Stock'}
+                    </div>
+                </div>
+            `;
+            
+            stockList.appendChild(stockItem);
+        }
+
+        // Update product UI
+        function updateProductUI(productKey) {
+            const stockElement = document.getElementById(`${productKey}-stock`);
+            const statusElement = document.getElementById(`${productKey}-status`);
+            
+            if (stockElement && statusElement) {
+                const product = stockData[productKey];
+                stockElement.textContent = `${product.quantity} ${product.unit}`;
+                
+                if (product.quantity > 5) {
+                    statusElement.textContent = 'In Stock';
+                    statusElement.className = 'stock-status good';
+                } else {
+                    statusElement.textContent = 'Low Stock';
+                    statusElement.className = 'stock-status low';
+                }
+            }
+        }
+
+        // Update stock function (for backward compatibility)
+        function updateStock(itemKey, quantity) {
+            addToStock(itemKey, quantity);
+        }
+
+        // Update low stock alert
+        function updateLowStockAlert() {
+            const hasLowStock = Object.values(stockData).some(item => item.quantity <= 5);
+            const alert = document.getElementById('low-stock-alert');
+            
+            if (!hasLowStock) {
+                alert.style.display = 'none';
+            } else {
+                alert.style.display = 'flex';
+            }
+        }
+
+        // QR Code generation
+        function generateQR() {
+            const amount = document.getElementById('bill-amount').value;
+            const qrSection = document.getElementById('qr-section');
+            const qrAmount = document.getElementById('qr-amount');
+            
+            if (amount && amount > 0) {
+                qrAmount.textContent = '₹' + amount;
+                qrSection.classList.remove('hidden');
+                
+                // Simulate payment after 3 seconds
+                setTimeout(() => {
+                    alert('Payment Successful! ₹' + amount + ' received');
+                    qrSection.classList.add('hidden');
+                    document.getElementById('bill-amount').value = '';
+                }, 3000);
+            } else {
+                alert('Please enter a valid amount');
+            }
+        }
+
+        // Modal functions
+        function showDailyReport() {
+            document.getElementById('report-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('report-modal').classList.add('hidden');
+        }
+
+        // Request microphone permission on page load
+        window.addEventListener('load', function() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(function(stream) {
+                        console.log('Microphone permission granted');
+                        stream.getTracks().forEach(track => track.stop());
+                    })
+                    .catch(function(err) {
+                        console.log('Microphone permission denied:', err);
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
