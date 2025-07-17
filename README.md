@@ -16,7 +16,7 @@ SmartKirana is a modern, intuitive solution built to digitize small retail (kira
 
 - **Currently** - Used HTML, CSS and JAVASCRIPT
 
-- **Future** - Will be using REACT, NODE.JS, EXPRESS.JS FOR APIS, MongoDB etc....
+- **Future** - Will be using REACT, NODE.JS, EXPRESS.JS FOR APIS, MongoDB and also implement AI features to automate stuff.
 
 ## NOTE
 
